@@ -49,5 +49,8 @@
   "engines": {
     "node": ">=18.9.0"
   },
-  "engineStrict": true
+  "engineStrict": true,
+  "publishConfig": {
+    "access": "public"
+  }
 }
