@@ -1,7 +1,7 @@
 {
-  "name": "@vixen-js/qt-installer",
-  "version": "0.1.1",
-  "description": "Qt Installer for Vixen.js",
+  "name": "@vixen-js/pkg-installer",
+  "version": "0.2.0",
+  "description": "Package Installer for Vixen.js",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

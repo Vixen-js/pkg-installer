@@ -1,6 +1,6 @@
-# Qt Installer For Vixen.js
+# Pkg Installer For Vixen.js
 
-This project Install a QT Binaries and set up in a Vixen.js Project. it Supports caching in dowloads to avoid re download the binaries again.
+This project Install a package Binaries and setup in a Vixen.js Projects. it Supports caching in dowloads to avoid re download the binaries again.
 
 ## Requirements
 
@@ -10,7 +10,7 @@ This project Install a QT Binaries and set up in a Vixen.js Project. it Supports
 
 ## Features
 
-- Install QT Binaries
+- Install Package Binaries
 - Set up in a Vixen.js Project
 - Caching in dowloads to avoid re download the binaries again
 - Supports Extraction via 7zip.
