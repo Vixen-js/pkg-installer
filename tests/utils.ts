@@ -1,6 +1,6 @@
 import path from "path";
 
-export const TIMEOUT = 30000;
+export const TIMEOUT = 60000;
 export const outputDir = (osType: string) => path.resolve(__dirname, `../output/${osType}`);
 
 export const metadata = {

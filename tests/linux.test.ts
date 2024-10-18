@@ -19,7 +19,7 @@ describe("SetupQT for linux", () => {
   });
 
   test("check if qt exists", () => {
-    const expectedPath = `5.13.0/gcc_64`;
+    const expectedPath = `6.6.0/gcc_64`;
     const doesQtExist = fs.existsSync(path.resolve(outDir, expectedPath));
     expect(doesQtExist).toBe(true);
   });

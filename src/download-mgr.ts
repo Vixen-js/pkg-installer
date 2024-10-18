@@ -1,25 +1,16 @@
 import util from "util";
 import fs from "fs";
 import path from "path";
-import stream from "stream";
-import mkdir from "make-dir";
+import { pipeline } from "stream/promises";
+import { mkdirp } from "mkdirp";
 import Progress from "progress";
 import { DownloadError } from "./errors";
 
-const pipeline = util.promisify(stream.pipeline);
 const fsExists = util.promisify(fs.exists);
 
 interface DownloadOptions {
   name?: string;
   skipIfExists?: boolean;
-}
-
-function setProgress(tokens: string, totalAmount: number): stream.PassThrough {
-  const passThrough = new stream.PassThrough();
-  const progress = new Progress(tokens, { total: totalAmount });
-  passThrough.on("data", (chunk) => progress.tick(chunk.length));
-
-  return passThrough;
 }
 
 export async function downloadFile(fileLink: string, outputPath: string, options: DownloadOptions = {}): Promise<void> {
@@ -32,12 +23,26 @@ export async function downloadFile(fileLink: string, outputPath: string, options
     return console.warn(`⚠️ Archive already exists at ${outputPath}. Skipping Download...`);
   }
 
-  await mkdir.makeDirectory(path.dirname(outputPath));
+  await mkdirp(path.dirname(outputPath));
   const total = +`${res.headers.get("content-length") ?? 0}`;
   const totalInMb = (total / 1024 / 1024).toFixed(2);
-  await pipeline(
-    res.body!,
-    setProgress(`Downloading ${name} [:bar] :percent of ${totalInMb} MB :etas`, total),
-    fs.createWriteStream(outputPath),
-  );
+
+  const reader = res.body!.getReader();
+  const stream = fs.createWriteStream(outputPath);
+  while (true) {
+    const { done, value } = await reader.read();
+
+    if (done) break;
+
+    const bar = new Progress(`Downloading ${name} [:bar] :percent of ${totalInMb}MB :etas`, {
+      complete: "=",
+      incomplete: " ",
+      width: 20,
+      total: total,
+    });
+
+    bar.tick(value.byteLength);
+    stream.write(value);
+  }
+  stream.close();
 }

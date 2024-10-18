@@ -1,8 +1,8 @@
 import { downloadFile } from "./download-mgr";
 import { extractFile } from "./extractor";
 import path from "path";
-import envPaths from "env-paths";
-import mkdir from "make-dir";
+import envPaths from "env-paths-ts";
+import { mkdirp } from "mkdirp";
 
 interface SetupOptions {
   outputDir: string;
@@ -17,18 +17,21 @@ interface SetupOptions {
 export async function setupQT(options: SetupOptions): Promise<string> {
   const { downloadLink, cacheDir, force, displayName, outputDir, id, skipSetup } = options;
 
+  const downloadName = displayName || id;
+
   const archivePath = path.resolve(cacheDir || envPaths(`${id}`).cache, path.basename(downloadLink));
 
-  await mkdir.makeDirectory(outputDir);
+  await mkdirp(outputDir);
 
   if ((await skipSetup()) && !force) {
-    console.log(`Skipping installation for ${displayName}...`);
+    console.log(`Skipping installation for ${downloadName}...`);
     return outputDir;
   }
 
-  await downloadFile(downloadLink, archivePath);
+  console.log(`Downloading ${downloadName}...`);
+  await downloadFile(downloadLink, archivePath, { name: downloadName, skipIfExists: !force });
   await extractFile(archivePath, outputDir);
-  console.log(`Installed ${displayName} to ${outputDir}`);
+  console.log(`Installed ${downloadName} to ${outputDir}`);
 
   return outputDir;
 }
