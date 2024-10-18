@@ -1,6 +1,6 @@
 {
   "name": "@vixen-js/qt-installer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Qt Installer for Vixen.js",
   "main": "dist/index.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "files": [
     "dist/"
   ],
+  "types": "dist/src/index.d.ts",
   "author": "Seobryn <ing.jose.joya@gmail.com>",
   "license": "AGPL-3.0-only",
   "dependencies": {
