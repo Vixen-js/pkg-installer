@@ -1,11 +1,11 @@
 {
   "name": "@vixen-js/pkg-installer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Package Installer for Vixen.js",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "test": "jest"
   },
   "files": [
