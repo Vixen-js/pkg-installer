@@ -1,9 +1,6 @@
 import { unpack } from "7zip-min";
-import util from "util";
-import fs from "fs";
+import fs from "fs/promises";
 import { ExtractError } from "./errors";
-
-const fsExists = util.promisify(fs.exists);
 
 function unpackFile(archivePath: string, outputDir: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -18,7 +15,9 @@ function unpackFile(archivePath: string, outputDir: string): Promise<void> {
 
 export async function extractFile(archivePath: string, outputDir: string): Promise<void> {
   console.log(`Extracting ${archivePath} to ${outputDir} ...`);
-  if (!(await fsExists(archivePath))) {
+  try {
+    await fs.access(archivePath);
+  } catch (e) {
     throw new ExtractError(`Archive ${archivePath} does not exist.`);
   }
 

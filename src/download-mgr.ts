@@ -1,12 +1,9 @@
-import util from "util";
+import fsp from "fs/promises";
 import fs from "fs";
 import path from "path";
-import { pipeline } from "stream/promises";
 import { mkdirp } from "mkdirp";
 import Progress from "progress";
 import { DownloadError } from "./errors";
-
-const fsExists = util.promisify(fs.exists);
 
 interface DownloadOptions {
   name?: string;
@@ -19,8 +16,11 @@ export async function downloadFile(fileLink: string, outputPath: string, options
   if (!res.ok) {
     throw new DownloadError(`Failed to download ${name}:${fileLink}. ${res.statusText}`);
   }
-  if (options.skipIfExists && (await fsExists(outputPath))) {
-    return console.warn(`⚠️ Archive already exists at ${outputPath}. Skipping Download...`);
+  if (options.skipIfExists) {
+    try {
+      await fsp.access(outputPath);
+      return console.warn(`⚠️ Archive already exists at ${outputPath}. Skipping Download...`);
+    } catch (e) {}
   }
 
   await mkdirp(path.dirname(outputPath));
@@ -45,4 +45,5 @@ export async function downloadFile(fileLink: string, outputPath: string, options
     stream.write(value);
   }
   stream.close();
+  return;
 }

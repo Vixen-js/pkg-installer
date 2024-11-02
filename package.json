@@ -1,12 +1,13 @@
 {
   "name": "@vixen-js/pkg-installer",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Package Installer for Vixen.js",
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/src/index.js",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "pnpm build"
   },
   "files": [
     "dist/"

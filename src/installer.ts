@@ -28,10 +28,10 @@ export async function setupQT(options: SetupOptions): Promise<string> {
     return outputDir;
   }
 
-  console.log(`Downloading ${downloadName}...`);
+  console.log(`Downloading [${downloadName}]...`);
   await downloadFile(downloadLink, archivePath, { name: downloadName, skipIfExists: !force });
   await extractFile(archivePath, outputDir);
-  console.log(`Installed ${downloadName} to ${outputDir}`);
+  console.log(`Installed [${downloadName}] to ${outputDir}`);
 
   return outputDir;
 }
